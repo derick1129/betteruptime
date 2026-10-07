@@ -12,11 +12,20 @@ datasource db {
   provider = "postgresql"
 }
 
+model User {
+  id       String    @id @default(uuid())
+  username String    @unique
+  password String
+  websites Website[]
+}
+
 model Website {
   id        String        @id @default(uuid())
   url       String
   timeAdded DateTime
   ticks     WebsiteTick[]
+  user      User?         @relation(fields: [userId], references: [id])
+  userId    String?
 }
 
 model Region {
