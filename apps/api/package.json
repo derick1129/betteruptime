@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "express": "^5.2.1",
-    "store": "workspace:*"
+    "jsonwebtoken": "^9.0.3",
+    "store": "workspace:*",
+    "zod": "^4.6.5"
   }
 }
