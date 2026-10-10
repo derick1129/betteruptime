@@ -6,7 +6,7 @@ import { prismaClient } from "store/client";
 const router = Router();
 
 router.post("/signup", async (req, res) => {
-    const data = AuthInput.safeParse(req.body.data)
+    const data = AuthInput.safeParse(req.body)
     if (!data.success) {
         res.status(403).send("");
         return;
@@ -29,7 +29,7 @@ router.post("/signup", async (req, res) => {
 })
 
 router.post("/signin", async (req, res) => {
-    const data = AuthInput.safeParse(req.body.data)
+    const data = AuthInput.safeParse(req.body)
     if (!data.success) {
         res.status(403).send("");
         return;
