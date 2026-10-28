@@ -39,7 +39,9 @@ router.get("/status/:websiteId", authmiddleware, async (req, res) => {
         return res.status(411).json({ message: "Website not found" })
     }
     res.json({
-        website
+        url: website.url,
+        id: website.id,
+        userId: website.userId
     })
 })
 
