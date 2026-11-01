@@ -35,10 +35,18 @@ model Region {
 }
 
 model WebsiteTick {
-  id        String   @id @default(uuid())
-  time      DateTime
-  region    Region   @relation(fields: [regionId], references: [id])
-  regionId  String
-  website   Website  @relation(fields: [websiteId], references: [id])
-  websiteId String
+  id               String         @id @default(uuid())
+  response_time_ms Int
+  status           website_status
+  createdAt        DateTime       @default(now())
+  region           Region         @relation(fields: [regionId], references: [id])
+  regionId         String
+  website          Website        @relation(fields: [websiteId], references: [id])
+  websiteId        String
+}
+
+enum website_status {
+  Up
+  Down
+  Unknow
 }
