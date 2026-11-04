@@ -27,23 +27,52 @@ router.get("/status/:websiteId", authmiddleware, async (req, res) => {
         },
         include: {
             ticks: {
+                include: {
+                    region: true
+                },
                 orderBy: [{
                     createdAt: "desc"
                 }],
-                take: 10
+                take: 20
             }
         }
     })
 
     if (!website) {
-        return res.status(411).json({ message: "Website not found" })
+        return res.status(404).json({ message: "Website not found" })
     }
     res.json({
-        url: website.url,
         id: website.id,
-        userId: website.userId
+        url: website.url,
+        userId: website.userId,
+        timeAdded: website.timeAdded,
+        ticks: website.ticks
     })
 })
+
+router.delete("/:websiteId", authmiddleware, async (req, res) => {
+    const websiteId = req.params.websiteId as string;
+    const website = await prismaClient.website.findFirst({
+        where: {
+            id: websiteId,
+            userId: req.userId
+        }
+    });
+
+    if (!website) {
+        return res.status(404).json({ message: "Website not found" });
+    }
+
+    await prismaClient.websiteTick.deleteMany({
+        where: { websiteId }
+    });
+
+    await prismaClient.website.delete({
+        where: { id: websiteId }
+    });
+
+    res.json({ message: "Website deleted" });
+});
 
 router.get(["/", "/websites"], authmiddleware, async (req, res) => {
     const websites = await prismaClient.website.findMany({
