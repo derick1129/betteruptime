@@ -28,9 +28,9 @@ router.get("/status/:websiteId", authmiddleware, async (req, res) => {
         include: {
             ticks: {
                 orderBy: [{
-                    time: "desc"
+                    createdAt: "desc"
                 }],
-                take: 1
+                take: 10
             }
         }
     })
@@ -42,6 +42,18 @@ router.get("/status/:websiteId", authmiddleware, async (req, res) => {
         url: website.url,
         id: website.id,
         userId: website.userId
+    })
+})
+
+router.get(["/", "/websites"], authmiddleware, async (req, res) => {
+    const websites = await prismaClient.website.findMany({
+        where: {
+            userId: req.userId
+        }
+    })
+
+    res.json({
+        websites
     })
 })
 
